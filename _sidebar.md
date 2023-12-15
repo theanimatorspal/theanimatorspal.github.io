@@ -1,4 +1,4 @@
 <!-- docs/_sidebar.md -->
 
-* [Home](/)
-* [Guide](guide.md)
+* [Home](index.md "Home")
+* [Guide](guide.md "Getting Started")
