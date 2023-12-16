@@ -2,4 +2,4 @@
 ### Learn the JkrGUI Framework
 
 [Start Learn]()
-[Github](#/README)
+[Github](index.md)
