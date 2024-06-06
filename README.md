@@ -1,1 +1,3 @@
-# This is the Official Website for JKRGUI
+# My Website
+
+Portfolio and opinions blog.
