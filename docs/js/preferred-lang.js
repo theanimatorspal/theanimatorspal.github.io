@@ -1,1 +1,0 @@
-(()=>{var a={fallback:"https://koiraladarshan.com.np/",homes:{en:"https://koiraladarshan.com.np/"}};(()=>{let o=navigator.language||navigator.userLanguage;if(o in a.homes){window.location.href=a.homes[o];return}let e=o.split("-");for(let n in a.homes)if(n.indexOf(e[0])===0){window.location.href=a.homes[n];return}window.location.href=a.fallback})();})();

@@ -1,5 +1,0 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-us'
-title = 'Darshan Koirala'
-theme = 'ananke' 
-publishDir = 'docs'
