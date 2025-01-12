@@ -41,9 +41,14 @@ INSTALLED_APPS = [
 
     # Third - party apps
     "rest_framework",
+    "ckeditor",
+    "drf_spectacular",
 
     # Local apps
     "JKR.home",
+    "JKR.documentation",
+    "JKR.snippets",
+
 ]
 
 MIDDLEWARE = [
@@ -132,3 +137,14 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'My API Documentation',
+    'DESCRIPTION': 'API documentation for my project',
+    'VERSION': '1.0.0',  # Ensure this is properly set
+    'SERVE_INCLUDE_SCHEMA': False,  # Optional: to hide the raw schema from the UI
+    'SCHEMA_PATH_PREFIX': '/api/',  # Optional: if your APIs start with a prefix
+}
