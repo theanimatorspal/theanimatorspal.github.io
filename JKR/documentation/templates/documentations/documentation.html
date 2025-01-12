@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation List</title>
+</head>
+<body>
+    <h1>Documentation</h1>
+
+    <!-- Display the list of Documentation objects -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in documentation %}
+            <tr>
+                <td>{{ doc.id }}</td>
+                <td>{{ doc.title }}</td>
+                <td>{{ doc.description }}</td>
+                <td>{{ doc.created_at }}</td>
+                <!-- Add more fields as needed -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Add New Documentation</h2>
+    <!-- Render the form for adding new Documentation -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.media }}
+
+        {{ form.as_p }}
+        <button type="submit">Add Documentation</button>
+    </form>
+</body>
+</html>

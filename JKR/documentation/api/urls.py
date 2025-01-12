@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import DocumentationView
+from .views import ListItems
 
 urlpatterns = [
-    path('doci/', DocumentationView.as_view(), name='documentation'),
+    path('', ListItems.as_view(), name='documentation'),
 ]
