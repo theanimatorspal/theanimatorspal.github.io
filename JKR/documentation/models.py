@@ -6,5 +6,5 @@ class Documentation(models.Model):
     body = RichTextField(null=True, blank=True)
     is_active = models.BooleanField()
     
-    created_at = models.DateTimeField()
-    modified_by = models.DateTimeField()
+    created_at = models.DateTimeField(blank=True)
+    modified_by = models.DateTimeField(blank=True)

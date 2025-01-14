@@ -15,7 +15,7 @@ class ListItems(APIView):
             'form' : form
 
         }
-        return render(request, 'documentations/documentation.html', context)
+        return render(request, 'documentations/create.html', context)
     
     def post(self, request):
         form = DocumentationForm()
@@ -27,4 +27,4 @@ class ListItems(APIView):
             'documentation': documentation, 
             'form': form
         }
-        return render(request, 'documentations/documentation.html', context)
+        return render(request, 'documentations/create.html', context)

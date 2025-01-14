@@ -21,6 +21,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('JKR.home.urls')),
-    path('docs/', include('JKR.documentation.api.urls')),
+    path('docs/', include(('JKR.documentation.api.urls', 'documentation'), namespace='docs')),
     path('snippets/', include('JKR.snippets.api.urls')),
 ]
