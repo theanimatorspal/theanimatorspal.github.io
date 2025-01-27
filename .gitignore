@@ -1,5 +1,3 @@
-ims-venv
-
 # Created by https://www.gitignore.io
 
 ### OSX ###
@@ -86,7 +84,6 @@ target/
 *.pyc
 __pycache__/
 local_settings.py
-
+venv
 .env
 db.sqlite3
-ims-venv
