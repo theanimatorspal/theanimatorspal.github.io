@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "ckeditor",
     "drf_spectacular",
-    "django_distill",
 
     # Local apps
     "JKR.home",
