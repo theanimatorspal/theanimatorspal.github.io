@@ -3,8 +3,8 @@ from django.views.generic import TemplateView
 
 
 class HomePage(TemplateView):
-    template_name = "template/homes/index.html" 
+    template_name = "templates/homes/index.html" 
 class DocumentationPage(TemplateView):
-    template_name = "template/homes/documentation.html"
+    template_name = "templates/homes/documentation.html"
 
 # class Home(viewsets.Viewset):
