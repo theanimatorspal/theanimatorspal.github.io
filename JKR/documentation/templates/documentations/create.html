@@ -1,0 +1,37 @@
+{% extends "homes/home.html" %}
+{% block content %}
+
+<br><br><br><br><br><br><br><br>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Add the contents</h4>
+            </div>
+            {{form.errors}}
+            <div class="card-body">
+                <form method='POST'>
+                    {% csrf_token %}
+                    {{form.media}}
+
+                    <div class="form-group">
+                        <label>Title</label>
+                        {{form.title}}
+                    </div>
+                    <div class="form-group">
+                        <label>Add Body</label>
+                        {{form.body}}
+                    </div>
+
+
+
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
