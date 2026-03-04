@@ -1,0 +1,68 @@
+/* post.css - specific to individual blog posts */
+@import url('index.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap');
+
+.post-content {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--fg);
+    margin-top: 40px;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3 {
+    font-family: var(--font-sans);
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+[data-theme='dark'] {
+    --bg: #121212;
+    --fg: #e0e0e0;
+    --accent: #ffffff;
+    --dim: #a0a0a0;
+    --border: #222222;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--fg);
+}
+
+.post-content p {
+    margin-bottom: 24px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 40px;
+    color: var(--dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    color: var(--fg);
+}
+
+.post-header {
+    margin-bottom: 40px;
+}
+
+.post-header h1 {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+    .post-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .post-content {
+        font-size: 1.1rem;
+    }
+}
