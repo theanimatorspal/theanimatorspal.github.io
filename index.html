@@ -4,10 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ksaiocracy — Musings on Code, Life, and Entropy</title>
-    <meta name="description"
-        content="Personal blog of ksai. Exploring the intersection of technology, philosophy, and creative coding.">
-    <link rel="stylesheet" href="index.css">
+    <title>ksaiocracy - Musings on Life, and Entropy</title>
+    <meta name="description" content="Personal blog of ksai.">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/post.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- Initial Theme Setup (Flash Prevention) -->
     <script src="theme.js"></script>
 
     <!-- React & Babel CDNs -->
@@ -19,8 +24,15 @@
 <body>
     <div id="root"></div>
 
-    <!-- Main App Script -->
-    <script type="text/babel" src="app.js" data-type="module"></script>
+    <!-- Core Data -->
+    <script type="text/babel" src="data/posts.js"></script>
+
+    <!-- Components -->
+    <script type="text/babel" src="components/Sidebar.js"></script>
+    <script type="text/babel" src="components/PostCard.js"></script>
+
+    <!-- Main App -->
+    <script type="text/babel" src="app.js"></script>
 </body>
 
 </html>

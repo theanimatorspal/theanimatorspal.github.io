@@ -1,16 +1,16 @@
-const PostCard = ({ post }) => {
+const PostCard = ({ post, onClick }) => {
     return (
-        <li className="post-item">
-            <div className="post-meta">
-                <span className="post-date">{post.date}</span>
-                <span className="post-category">#{post.category}</span>
+        <div className="post-card" onClick={onClick}>
+            <div className="pc-meta">
+                <span>{post.date}</span>
+                <span style={{ color: 'var(--accent)' }}>{post.category}</span>
             </div>
-            <h2 className="post-title" style={post.isDevanagari ? { fontFamily: 'var(--font-serif)' } : {}}>
-                <a href={post.path}>{post.title}</a>
+            <h2 className="pc-title" style={post.isDevanagari ? { fontFamily: 'var(--font-serif)' } : {}}>
+                {post.title}
             </h2>
-            <p className="post-excerpt">{post.excerpt}</p>
-        </li>
+            <p className="pc-excerpt">{post.excerpt}</p>
+        </div>
     );
 };
 
-export default PostCard;
+

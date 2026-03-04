@@ -12,4 +12,4 @@ const Header = ({ theme, toggleTheme }) => {
     );
 };
 
-export default Header;
+
