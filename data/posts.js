@@ -1,5 +1,13 @@
 const posts = [
     {
+        id: 'internal-monologue',
+        title: 'The Theatre of the Mind: Living with an Intense Internal Monologue',
+        date: 'March 5, 2026',
+        category: 'Psychology',
+        excerpt: 'Not everyone has a voice in their head. Exploring the cinematic, often overwhelming experience of a hyper-active internal monologue.',
+        path: 'data/posts/psychology/internal-monologue.html'
+    },
+    {
         id: 'monads-curse',
         title: 'The Curse of Monads: Breaking the Spell',
         date: 'March 7, 2026',
