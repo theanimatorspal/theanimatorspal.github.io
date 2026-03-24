@@ -19,10 +19,13 @@ var Anim = window.Anim = {
         svg.innerHTML = `
             <defs>
                 <filter id="ink-bleed" x="-20%" y="-20%" width="140%" height="140%">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" result="noise" />
+                    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
                     <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
                     <feGaussianBlur in="SourceGraphic" stdDeviation="0.4" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
                 </filter>
             </defs>
         `;
@@ -60,8 +63,10 @@ var Anim = window.Anim = {
         fsBtn.className = 'anim-card-fs';
         fsBtn.textContent = 'Fullscreen';
         fsBtn.onclick = () => {
-            card.classList.toggle('fullscreen');
-            this._handleResize(card);
+            const isFS = card.classList.toggle('fullscreen');
+            fsBtn.textContent = isFS ? 'Exit Fullscreen' : 'Fullscreen';
+            // Simple delay to ensure CSS has applied before measuring
+            setTimeout(() => this._handleResize(card), 50);
         };
         header.appendChild(fsBtn);
 
@@ -357,42 +362,76 @@ var Anim = window.Anim = {
         this._register(card, tl);
     },
 
+    _createTornPaper(viewport, w = 1200, h = 800) {
+        const paper = document.createElement('div');
+        paper.className = 'anim-torn-paper';
+        paper.style.width = w + 'px';
+        paper.style.height = h + 'px';
+        paper.style.left = (1920 - w) / 2 + 'px';
+        paper.style.top = (1080 - h) / 2 + 'px';
+
+        // More organic jagged edge
+        let path = "polygon(";
+        const steps = 60;
+        const drift = 2.5;
+        for(let i=0; i<=steps; i++) { path += `${(i/steps)*100}% ${Math.random()*drift}% ,`; } 
+        for(let i=0; i<=steps; i++) { path += `${100-Math.random()*drift}% ${(i/steps)*100}% ,`; }
+        for(let i=steps; i>=0; i--) { path += `${(i/steps)*100}% ${100-Math.random()*drift}% ,`; }
+        for(let i=steps; i>=0; i--) { path += `${Math.random()*drift}% ${(i/steps)*100}% ,`; }
+        path = path.slice(0, -1) + ")";
+        paper.style.clipPath = path;
+
+        viewport.appendChild(paper);
+        return paper;
+    },
+
+    // ── TYPES v7 ──
+
     flow(container, title, steps, opts = {}) {
         const { card, viewport } = this._createCard(container, title, opts.accent);
-        const paper = this._createTornPaper(viewport, 1400, 600);
+        
         const stage = document.createElement('div');
         stage.style.width = '100%';
         stage.style.height = '100%';
         stage.style.display = 'flex';
         stage.style.alignItems = 'center';
         stage.style.justifyContent = 'center';
-        paper.appendChild(stage);
+        stage.style.gap = '60px';
+        viewport.appendChild(stage);
 
-        const flowWrap = document.createElement('div');
-        flowWrap.style.display = 'flex';
-        flowWrap.style.gap = '60px';
-        stage.appendChild(flowWrap);
-
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
-        tl.from(paper, { y: 1000, skewX: 10, duration: 1.2, ease: "power4.out" });
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: 3 });
 
         steps.forEach((s, i) => {
-            const node = document.createElement('div');
-            node.className = 'anim-glass';
-            node.style.padding = '30px 60px';
-            node.style.fontSize = '3.5rem';
-            node.style.color = 'var(--anim-accent)';
-            node.textContent = s;
-            flowWrap.appendChild(node);
-            tl.from(node, { scale: 0.8, opacity: 0, duration: 0.8, ease: "back.out(2)" }, "-=0.4");
+            const paper = this._createTornPaper(stage, 400, 250);
+            paper.style.position = "relative";
+            paper.style.left = "auto"; paper.style.top = "auto";
+            paper.style.display = "flex"; paper.style.alignItems = "center"; paper.style.justifyContent = "center";
+            paper.style.padding = "40px";
+            
+            const content = document.createElement('div');
+            content.style.fontSize = "2.8rem";
+            content.style.color = "var(--anim-accent)";
+            content.style.fontFamily = "'Gochi Hand', cursive";
+            content.style.lineHeight = "1.2";
+            content.style.textAlign = "center";
+            content.textContent = s;
+            paper.appendChild(content);
+
+            tl.from(paper, { 
+                y: 800, 
+                rotate: (Math.random() - 0.5) * 15, 
+                duration: 1, 
+                ease: "back.out(1.2)" 
+            }, i * 0.4);
 
             if (i < steps.length - 1) {
                 const arr = document.createElement('div');
-                arr.style.fontSize = '5rem';
+                arr.style.fontSize = '8rem';
                 arr.style.color = 'var(--anim-text-dim)';
+                arr.style.fontFamily = "'Inter', sans-serif";
                 arr.textContent = '→';
-                flowWrap.appendChild(arr);
-                tl.from(arr, { opacity: 0, x: -20, duration: 0.4 }, "-=0.3");
+                stage.appendChild(arr);
+                tl.from(arr, { opacity: 0, scale: 0, duration: 0.6, ease: "elastic.out(1, 0.5)" }, "-=0.2");
             }
         });
 
