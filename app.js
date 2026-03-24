@@ -25,10 +25,6 @@ const App = () => {
                         const backBtn = content.querySelector('.back-btn');
                         if (backBtn) backBtn.remove();
                         setPostContent(content.innerHTML);
-                        // Trigger Highlight.js
-                        setTimeout(() => {
-                            if (window.hljs) hljs.highlightAll();
-                        }, 100);
                     }
                 })
                 .catch(err => console.error("Error loading post:", err));
@@ -39,6 +35,43 @@ const App = () => {
             setPostContent('');
         }
     }, [activePost]);
+
+    React.useEffect(() => {
+        if (postContent && activePost) {
+            requestAnimationFrame(() => {
+                if (window.hljs) window.hljs.highlightAll();
+                
+                // Execute scripts in the post content
+                const contentDiv = document.querySelector('.post-body-content');
+                if (contentDiv && activePost) {
+                    const postDir = activePost.path.substring(0, activePost.path.lastIndexOf('/'));
+                    
+                    // Fix image paths
+                    const images = contentDiv.querySelectorAll('img');
+                    images.forEach(img => {
+                        const src = img.getAttribute('src');
+                        if (src && !src.startsWith('http') && !src.startsWith('/') && !src.startsWith('.')) {
+                            img.src = postDir + '/' + src;
+                        }
+                    });
+
+                    const scripts = contentDiv.querySelectorAll('script');
+                    scripts.forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        Array.from(oldScript.attributes).forEach(attr => {
+                            let value = attr.value;
+                            if (attr.name === 'src' && !value.startsWith('http') && !value.startsWith('/') && !value.startsWith('.')) {
+                                value = postDir + '/' + value;
+                            }
+                            newScript.setAttribute(attr.name, value);
+                        });
+                        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                        oldScript.parentNode.replaceChild(newScript, oldScript);
+                    });
+                }
+            });
+        }
+    }, [postContent]);
 
     const toggleTheme = () => {
         setTheme(prev => prev === 'light' ? 'dark' : 'light');

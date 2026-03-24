@@ -5,16 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Curse of Monads: Breaking the Spell - ksaiocracy</title>
-    <link rel="stylesheet" href="../../../styles/index.css">
-    <link rel="stylesheet" href="../../../styles/post.css">
-    <script src="../../../theme.js"></script>
+    <link rel="stylesheet" href="../../../../styles/index.css">
+    <link rel="stylesheet" href="../../../../styles/post.css">
+    <link rel="stylesheet" href="../../../../styles/anim.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+    <script src="../../../../components/Anim.js"></script>
+    <script src="../../../../theme.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 </head>
 
 <body>
     <div class="container">
         <div class="view-post">
-            <a href="../../../index.html" class="back-btn">← Back to Feed</a>
+            <a href="../../../../index.html" class="back-btn">← Back to Feed</a>
 
             <header class="post-detail-header">
                 <div class="pc-meta">
@@ -25,12 +29,15 @@
             </header>
 
             <div class="post-body">
-                <p>Have you heard of the <strong>Curse of Monads</strong>? It’s a real, documented phenomenon in
+
+                <div id="anim-hero"></div>
+
+                <p>Have you heard of the <strong>Curse of Monads</strong>? It's a real, documented phenomenon in
                     computer science. The legend says: <em>once you finally understand what a monad is, you lose the
                         ability to explain it to anyone else.</em></p>
 
                 <p>On the internet, you'll find all sorts of explanations involving burritos, spacesuits, or even toxic
-                    waste. But honestly, it’s a remarkably simple concept. Today, we’re going to break the curse.</p>
+                    waste. But honestly, it's a remarkably simple concept. Today, we're going to break the curse.</p>
 
                 <h2>Level 0: The Prerequisites</h2>
                 <p>Before we touch the "M-word," let's make sure our foundation is solid. We need to look at three
@@ -45,14 +52,18 @@
                     </li>
                     <li><strong>Functional:</strong> Data is input. <code>y = f(x)</code>. You give <code>x</code> to a
                         function, and it spits out <code>y</code>. Crucially, <code>x</code> stays exactly as it was. No
-                        state is changed; it’s just mathematical purity.</li>
+                        state is changed; it's just mathematical purity.</li>
                 </ul>
+
+                <div id="anim-data-flow"></div>
 
                 <h3>2. Higher Order Functions</h3>
                 <p>A first-order function is simple: <code>y = f(x)</code>, where <code>y</code> is just an output. A
                     <strong>Higher Order Function</strong> is a bit more meta: it can return a function as its output,
-                    or take a function as its input. It’s functions all the way down.
+                    or take a function as its input. It's functions all the way down.
                 </p>
+
+                <div id="anim-higher-order"></div>
 
                 <h3>3. Closures (Private Backpacks)</h3>
                 <p>Closures are essentially functions with a private state or access to their environment. Think of them
@@ -70,7 +81,9 @@ local step_up = closure_factory()
 step_up() -- Prints 3
 step_up() -- Prints 6</code></pre>
 
-                <p>You can’t touch <code>x</code> from the outside. It’s locked inside the closure’s "memory."</p>
+                <p>You can't touch <code>x</code> from the outside. It's locked inside the closure's "memory."</p>
+
+                <div id="anim-closure"></div>
 
                 <hr>
 
@@ -92,11 +105,15 @@ step_up() -- Prints 6</code></pre>
                             Package</strong> containing the cat.</li>
                 </ol>
 
+                <div id="anim-package"></div>
+
                 <blockquote>
                     <strong>The Teleportation Clause:</strong> If you say "Keep the package empty," it teleports the
                     item somewhere else and remains empty. But once a package is empty, it loses the ability to follow
                     further instructions. It just stays empty.
                 </blockquote>
+
+                <div id="anim-teleport"></div>
 
                 <h2>Monads in the Wild (Eager Edition)</h2>
                 <p>In the C++ world, we call this <code>std::optional&lt;T&gt;</code>. It's the <strong>Maybe
@@ -118,6 +135,8 @@ auto result = std::optional{40}
                 <p>In this scenario, the constructor is the <strong>Unit</strong> (putting data in the package) and
                     <code>and_then</code> is the <strong>Bind</strong> function.
                 </p>
+
+                <div id="anim-maybe"></div>
 
                 <hr>
 
@@ -165,6 +184,8 @@ local result = Lazy(40)
 
 print(result:eval()) -- prints 5</code></pre>
 
+                <div id="anim-lazy"></div>
+
                 <p>And there it is. The curse is broken. You now understand Monads as effectively as a Haskeller, but
                     with much better metaphors. Now, go forth and explain it to someone else. If you can.</p>
             </div>
@@ -173,8 +194,11 @@ print(result:eval()) -- prints 5</code></pre>
                 style="margin-top: 80px; text-align: center; border-top: 1px solid var(--border); padding-top: 40px;">
                 <p style="color: var(--dim); font-size: 0.9rem;">Thanks for reading <strong>ksaiocracy</strong>.</p>
             </footer>
+
+            <script src="script.js"></script>
         </div>
     </div>
+
 </body>
 
 </html>
