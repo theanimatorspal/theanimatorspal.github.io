@@ -440,15 +440,11 @@ var Anim = window.Anim = {
 
     lowerThird(container, title, opts = {}) {
         const { card, viewport } = this._createCard(container, title, opts.accent);
-        const paper = this._createTornPaper(viewport, 900, 250);
-        paper.style.bottom = "100px"; paper.style.left = "100px"; paper.style.top = "auto";
+        const paper = this._createTornPaper(viewport, 950, 300);
+        paper.style.bottom = "80px"; paper.style.left = "80px"; paper.style.top = "auto";
         
         const stage = document.createElement('div');
-        stage.style.width = '100%';
-        stage.style.height = '100%';
-        stage.style.padding = "40px";
-        stage.style.display = 'flex';
-        stage.style.flexDirection = 'column';
+        stage.className = 'anim-lt-v4';
         paper.appendChild(stage);
 
         stage.innerHTML = `
@@ -458,9 +454,9 @@ var Anim = window.Anim = {
         const sub = stage.querySelector('.anim-lt-sub-v4');
 
         const tl = gsap.timeline({ repeat: -1, repeatDelay: 4 });
-        tl.from(paper, { x: -1000, duration: 1, ease: "power3.out" })
-          .to(sub, { opacity: 1, y: 0, duration: 0.8 }, "-=0.2")
-          .to(paper, { opacity: 0, x: -50, duration: 0.8, delay: 5 });
+        tl.from(paper, { y: 200, opacity: 0, duration: 1, ease: "power3.out" })
+          .to(sub, { opacity: 1, duration: 1 }, "-=0.2")
+          .to(paper, { opacity: 0, scale: 0.9, duration: 0.8 }, "+=5");
 
         this._register(card, tl);
     },

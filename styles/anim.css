@@ -2,8 +2,8 @@
 
 :root {
   --anim-bg-main: #ffffff;
-  --anim-bg-paper: #fcfcf7; 
-  --anim-paper-line: rgba(0, 0, 0, 0.08); /* More visible */
+  --anim-bg-paper: #f9f9f5; 
+  --anim-paper-line: rgba(70, 90, 110, 0.12); /* Slightly darker/blueish for better survival in scaling */
   --anim-accent: #34495e; /* Premium Slate Ink */
   --anim-text-bold: #1a1a1a;
   --anim-text-soft: #444444;
@@ -93,8 +93,8 @@
   overflow: hidden;
   background-color: var(--anim-bg-paper);
   
-  /* Clearly Visible Horizontal Lines */
-  background-image: linear-gradient(var(--anim-paper-line) 1px, transparent 1px);
+  /* Clearer, slightly thicker lines to stay visible when scaled down */
+  background-image: linear-gradient(var(--anim-paper-line) 1.5px, transparent 1.5px);
   background-size: 100% 40px;
 }
 
@@ -241,21 +241,26 @@
 /* ── Lower Third v4 ── */
 
 .anim-lt-v4 {
-  position: absolute;
-  bottom: 100px;
-  left: 100px;
-  padding: 20px;
-  border-left: 8px solid var(--anim-accent);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically in the slip */
+  height: 100%;
+  padding-left: 40px;
+  border-left: 10px solid var(--anim-accent);
 }
 
 .anim-lt-name-v4 {
-  font-size: 5rem;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 4.5rem;
   font-weight: 700;
   color: var(--anim-text-bold);
+  line-height: 1.1;
+  margin-bottom: 5px;
 }
 
 .anim-lt-sub-v4 {
-  font-size: 2.5rem;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 2.2rem;
   color: var(--anim-text-dim);
   font-style: italic;
 }
