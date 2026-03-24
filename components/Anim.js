@@ -132,13 +132,13 @@ var Anim = window.Anim = {
         return paper;
     },
 
-    _sketch(tl, element, duration = 1.2) {
+    _sketch(tl, element, duration = 1.5) {
         if (!element) return;
         const paths = element.querySelectorAll('path, line, circle, ellipse, polyline, polygon');
         paths.forEach(p => {
             const len = p.getTotalLength();
             gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
-            tl.to(p, { strokeDashoffset: 0, duration: duration, ease: "sine.inOut" }, "-=0.6");
+            tl.to(p, { strokeDashoffset: 0, duration: duration, ease: "power2.inOut" }, "-=1.2");
         });
     },
 
@@ -169,7 +169,7 @@ var Anim = window.Anim = {
                     </g>
                     <path class="anim-sketch-path" d="M 380 430 Q 400 450 420 430" />
                 </g>
-                <text class="label" x="400" y="580" text-anchor="middle" fill="var(--anim-accent)" style="font-size: 80px; opacity:0; font-family:'Architects Daughter', cursive;">${opts.word || "MONAD"}</text>
+                <text class="label" x="400" y="580" text-anchor="middle" fill="var(--anim-accent)" style="font-size: 80px; opacity:0; font-family:'Kalam', cursive; font-weight:700;">${opts.word || "MONAD"}</text>
             </svg>
         `;
 
@@ -177,10 +177,10 @@ var Anim = window.Anim = {
         const label = stage.querySelector('.label');
 
         const tl = gsap.timeline({ repeat: -1, yoyo: true, repeatDelay: 1.5 });
-        tl.from(paper, { y: 1100, rotate: 10, duration: 1.5, ease: "power4.out" });
-        this._sketch(tl, stage, 1.5);
-        tl.to(label, { opacity: 1, y: -10, duration: 0.8 }, "-=0.5")
-          .to(mascot, { y: -20, duration: 2, ease: "sine.inOut" }, "-=1");
+        tl.from(paper, { y: 1200, rotate: 5, duration: 1.5, ease: "expo.out" });
+        this._sketch(tl, stage, 1.8);
+        tl.to(label, { opacity: 1, y: -10, duration: 1, ease: "power2.out" }, "-=0.8")
+          .to(mascot, { y: -20, duration: 2.5, ease: "sine.inOut" }, "-=1.5");
 
         this._register(card, tl);
     },
@@ -213,7 +213,7 @@ var Anim = window.Anim = {
         tbox.appendChild(cursor);
 
         const tl = gsap.timeline({ repeat: -1, repeatDelay: 3 });
-        tl.from(paper, { x: -1500, rotate: -5, duration: 1.2, ease: "expo.out" });
+        tl.from(paper, { y: -1200, rotate: -3, duration: 1.4, ease: "power4.out" });
         
         lineData.forEach(({ el, text }) => {
             tl.to(el, {
@@ -411,7 +411,8 @@ var Anim = window.Anim = {
             const content = document.createElement('div');
             content.style.fontSize = "2.8rem";
             content.style.color = "var(--anim-accent)";
-            content.style.fontFamily = "'Gochi Hand', cursive";
+            content.style.fontFamily = "'Kalam', cursive";
+            content.style.fontWeight = "700";
             content.style.lineHeight = "1.2";
             content.style.textAlign = "center";
             content.textContent = s;
