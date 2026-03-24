@@ -31,6 +31,14 @@ const posts = [
         excerpt: 'Rebuilding a digital home with simplicity in mind. Why minimalism matters in an age of information overload.',
         path: 'data/posts/philosophy/hello-world/index.html'
     },
+    {
+        id: 'subhashitani',
+        title: 'सुभाषितानि: Wisdom in Verses',
+        date: 'March 24, 2026',
+        category: 'Philosophy',
+        excerpt: 'Exploring the timeless wisdom of Sanskrit Subhashitas with their profound Nepali meanings.',
+        path: 'data/posts/philosophy/subhashitani/index.html'
+    },
 ];
 
 const categories = [

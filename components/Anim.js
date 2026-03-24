@@ -109,27 +109,8 @@ var Anim = window.Anim = {
     },
 
     // ── HELPERS ──
-
-    _createTornPaper(viewport, w = 1200, h = 800) {
-        const paper = document.createElement('div');
-        paper.className = 'anim-torn-paper';
-        paper.style.width = w + 'px';
-        paper.style.height = h + 'px';
-        paper.style.left = (1920 - w) / 2 + 'px';
-        paper.style.top = (1080 - h) / 2 + 'px';
-
-        // Generate jagged edge
-        let path = "polygon(";
-        const steps = 40;
-        for(let i=0; i<=steps; i++) { path += `${(i/steps)*100}% ${Math.random()*2}% ,`; } // top
-        for(let i=0; i<=steps; i++) { path += `${100-Math.random()*2}% ${(i/steps)*100}% ,`; } // right
-        for(let i=steps; i>=0; i--) { path += `${(i/steps)*100}% ${100-Math.random()*2}% ,`; } // bottom
-        for(let i=steps; i>=0; i--) { path += `${Math.random()*2}% ${(i/steps)*100}% ,`; } // left
-        path = path.slice(0, -1) + ")";
-        paper.style.clipPath = path;
-
-        viewport.appendChild(paper);
-        return paper;
+    _getAnim(defaults, override) {
+        return { ...defaults, ...(override || {}) };
     },
 
     _sketch(tl, element, duration = 1.5) {
@@ -147,7 +128,7 @@ var Anim = window.Anim = {
     mascot(container, title, opts = {}) {
         const { card, viewport } = this._createCard(container, title, opts.accent);
         const paper = this._createTornPaper(viewport, 800, 600);
-        
+
         const stage = document.createElement('div');
         stage.style.width = '100%';
         stage.style.height = '100%';
@@ -176,11 +157,19 @@ var Anim = window.Anim = {
         const mascot = stage.querySelector('.mascot-group');
         const label = stage.querySelector('.label');
 
-        const tl = gsap.timeline({ repeat: -1, yoyo: true, repeatDelay: 1.5 });
-        tl.from(paper, { y: 1200, rotate: 5, duration: 1.5, ease: "expo.out" });
-        this._sketch(tl, stage, 1.8);
-        tl.to(label, { opacity: 1, y: -10, duration: 1, ease: "power2.out" }, "-=0.8")
-          .to(mascot, { y: -20, duration: 2.5, ease: "sine.inOut" }, "-=1.5");
+        const tl = gsap.timeline({ repeat: -1, yoyo: true, repeatDelay: opts.repeatDelay || 1.5 });
+
+        const inA = this._getAnim({ y: 1200, rotate: 5, duration: opts.inDuration || 1.5, ease: "expo.out" }, opts.in);
+        tl.from(paper, inA);
+
+        this._sketch(tl, stage, opts.sketchDuration || 1.8);
+        tl.to(label, { opacity: 1, y: -10, duration: opts.labelDuration || 1, ease: "power2.out" }, "-=0.8")
+            .to(mascot, { y: -20, duration: opts.duration || 2.5, ease: "sine.inOut" }, "-=1.5");
+
+        if (opts.out) {
+            const outA = this._getAnim({ duration: opts.outDuration || 0.6 }, opts.out);
+            tl.to(paper, outA, "+=3");
+        }
 
         this._register(card, tl);
     },
@@ -188,7 +177,7 @@ var Anim = window.Anim = {
     typing3d(container, title, lines, opts = {}) {
         const { card, viewport } = this._createCard(container, title, opts.accent);
         const paper = this._createTornPaper(viewport, 1100, 700);
-        
+
         const stage = document.createElement('div');
         stage.style.width = '100%';
         stage.style.height = '100%';
@@ -212,24 +201,32 @@ var Anim = window.Anim = {
         cursor.className = 'anim-cursor-v4';
         tbox.appendChild(cursor);
 
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 3 });
-        tl.from(paper, { y: -1200, rotate: -3, duration: 1.4, ease: "power4.out" });
-        
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: opts.repeatDelay || 3 });
+        const inA = this._getAnim({ y: -1200, rotate: -3, duration: opts.inDuration || 1.4, ease: "power4.out" }, opts.in);
+        tl.from(paper, inA);
+
+        const typeSpeed = opts.typeSpeed || 0.04;
         lineData.forEach(({ el, text }) => {
             tl.to(el, {
-                duration: text.length * 0.04,
+                duration: text.length * typeSpeed,
                 text: text,
                 ease: "none",
                 onStart: () => el.after(cursor)
             });
         });
 
+        if (opts.out) {
+            const outA = this._getAnim({ duration: opts.outDuration || 0.6 }, opts.out);
+            tl.to(paper, outA, "+=3");
+        }
+
         this._register(card, tl);
     },
 
     boom(container, title, opts = {}) {
         const { card, viewport } = this._createCard(container, title, opts.accent);
-        const paper = this._createTornPaper(viewport, 900, 600);
+        const paper = this._createTornPaper(viewport, 1000, 700);
+
         const stage = document.createElement('div');
         stage.style.width = '100%';
         stage.style.height = '100%';
@@ -239,126 +236,121 @@ var Anim = window.Anim = {
         stage.style.justifyContent = 'center';
         paper.appendChild(stage);
 
-        const wordEl = document.createElement('div');
-        wordEl.className = 'anim-boom-v4';
-        wordEl.textContent = opts.word || "BOOM";
-        stage.appendChild(wordEl);
+        stage.innerHTML = `
+            <div class="anim-boom-v4" style="opacity:0">${opts.word || "BOOM"}</div>
+            <div class="anim-lt-sub-v4" style="opacity:0; margin-top:20px;">${opts.subtitle || ""}</div>
+        `;
+        const word = stage.querySelector('.anim-boom-v4');
+        const sub = stage.querySelector('.anim-lt-sub-v4');
 
-        const subEl = document.createElement('div');
-        subEl.className = 'anim-lt-sub-v4';
-        subEl.style.opacity = '0';
-        subEl.style.marginTop = '20px';
-        subEl.textContent = opts.subtitle || "";
-        stage.appendChild(subEl);
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: opts.repeatDelay || 2.5 });
+        const inA = this._getAnim({ scale: 0, rotate: -20, duration: opts.inDuration || 1, ease: "back.out(1.7)" }, opts.in);
+        const outA = this._getAnim({ opacity: 0, scale: 1.1, duration: opts.outDuration || 0.6 }, opts.out);
 
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
-        tl.from(paper, { scale: 0, rotate: 15, duration: 1, ease: "back.out(1.7)" })
-          .from(wordEl, { opacity:0, scale: 0.5, duration: 0.8, ease: "elastic.out(1, 0.5)" }, "-=0.2")
-          .to(subEl, { opacity: 1, y: -10, duration: 0.8 }, "-=0.4");
+        tl.from(paper, inA)
+            .to(word, { opacity: 1, scale: 1, duration: opts.duration || 0.5, ease: "elastic.out(1, 0.3)" })
+            .to(sub, { opacity: 1, y: -10, duration: opts.subtitleDuration || 0.8 }, "-=0.2")
+            .to(paper, outA, `+=${opts.holdTime || 4}`);
 
         this._register(card, tl);
     },
 
     table(container, title, opts = {}) {
         const { card, viewport } = this._createCard(container, title, opts.accent);
-        const paper = this._createTornPaper(viewport, 1300, 750);
-        const headers = opts.headers || [];
-        const rows = opts.rows || [];
-
+        const paper = this._createTornPaper(viewport, 1400, 900);
         const stage = document.createElement('div');
         stage.style.width = '100%';
-        stage.style.height = '100%';
-        stage.style.display = 'flex';
-        stage.style.alignItems = 'center';
-        stage.style.justifyContent = 'center';
+        stage.style.padding = '80px';
         paper.appendChild(stage);
 
         const table = document.createElement('table');
         table.className = 'anim-table-v4';
-        
-        let html = '<thead><tr>';
-        headers.forEach(h => html += `<th style="opacity:0">${h}</th>`);
-        html += '</tr></thead><tbody>';
-        rows.forEach(row => {
-            html += '<tr>';
-            row.forEach(cell => html += `<td style="opacity:0">${cell}</td>`);
-            html += '</tr>';
-        });
-        html += '</tbody>';
-        table.innerHTML = html;
+        const headers = opts.headers || [];
+        const rows = opts.rows || [];
+
+        table.innerHTML = `
+            <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+            <tbody>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
+        `;
         stage.appendChild(table);
 
-        const ths = table.querySelectorAll('th');
-        const tds = table.querySelectorAll('td');
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: opts.repeatDelay || 3 });
+        const inA = this._getAnim({ x: 1920, rotate: 5, duration: opts.inDuration || 1.2, ease: "power3.out" }, opts.in);
+        tl.from(paper, inA);
 
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 3 });
-        tl.from(paper, { y: -1000, duration: 1.2, ease: "bounce.out" })
-          .to(ths, { opacity: 1, duration: 0.8, stagger: 0.1 })
-          .to(tds, { 
-            opacity: 1, 
-            duration: 0.5, 
-            stagger: 0.05,
-            onStart: function() { this.targets().forEach(t => t.style.filter = 'var(--anim-ink-filter)'); }
-          }, "-=0.3");
+        const items = table.querySelectorAll('th, td');
+        tl.from(items, { opacity: 0, y: 30, stagger: opts.stagger || 0.1, duration: opts.duration || 0.8, ease: "power2.out" }, "-=0.4");
+
+        if (opts.out) {
+            const outA = this._getAnim({ duration: opts.outDuration || 0.6 }, opts.out);
+            tl.to(paper, outA, "+=4");
+        }
 
         this._register(card, tl);
     },
 
-    tree(container, title, nodes, opts = {}) {
+    tree(container, title, data, opts = {}) {
         const { card, viewport } = this._createCard(container, title, opts.accent);
-        const paper = this._createTornPaper(viewport, 1400, 850);
-        
+        const paper = this._createTornPaper(viewport, 1500, 900);
         const stage = document.createElement('div');
         stage.style.width = '100%';
         stage.style.height = '100%';
         paper.appendChild(stage);
 
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("viewBox", "0 0 1600 800");
-        svg.style.width = "100%";
-        svg.style.height = "100%";
-        svg.className.baseVal = "anim-ink-text";
-        stage.appendChild(svg);
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: opts.repeatDelay || 3 });
+        const inA = this._getAnim({ opacity: 0, scale: 0.8, duration: opts.inDuration || 1.5, ease: "power2.inOut" }, opts.in);
+        tl.from(paper, inA);
 
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
-        tl.from(paper, { x: 1920, rotate: -3, duration: 1, ease: "power2.out" });
+        const drawNode = (node, x, y, level) => {
+            const circle = document.createElement('div');
+            circle.className = 'tree-node';
+            circle.style.position = 'absolute';
+            circle.style.left = x + 'px';
+            circle.style.top = y + 'px';
+            circle.style.width = '120px';
+            circle.style.height = '120px';
+            circle.style.borderRadius = '50%';
+            circle.style.border = `4px solid var(--anim-accent)`;
+            circle.style.display = 'flex';
+            circle.style.alignItems = 'center';
+            circle.style.justifyContent = 'center';
+            circle.style.fontSize = '2rem';
+            circle.style.fontFamily = "'Kalam', cursive";
+            circle.textContent = node.symbol;
+            stage.appendChild(circle);
 
-        function drawNode(n, px, py, cx, cy) {
-            if (px !== null) {
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                line.setAttribute("x1", px); line.setAttribute("y1", py);
-                line.setAttribute("x2", cx); line.setAttribute("y2", cy);
-                line.setAttribute("stroke", "var(--anim-accent)");
-                line.setAttribute("stroke-width", "3.5");
-                line.setAttribute("stroke-linecap", "round");
-                svg.appendChild(line);
-                const len = Math.sqrt((cx-px)**2 + (cy-py)**2);
-                tl.fromTo(line, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.8 }, "-=0.6");
-            }
+            tl.from(circle, { opacity: 0, scale: 0, duration: opts.nodeDuration || 0.6, ease: "back.out(1.5)" }, "-=0.4");
 
-            const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-            g.innerHTML = `
-                <circle class="anim-sketch-path" cx="${cx}" cy="${cy}" r="65" />
-                <text x="${cx}" y="${cy}" text-anchor="middle" dy=".3em" fill="var(--anim-accent)" font-size="45" font-family="'Architects Daughter'">${n.symbol || ''}</text>
-                <text x="${cx}" y="${cy+110}" text-anchor="middle" fill="var(--anim-text-dim)" font-size="28" font-family="'Gochi Hand'">${n.label}</text>
-            `;
-            svg.appendChild(g);
-            
-            const circle = g.querySelector('circle');
-            const clen = circle.getTotalLength();
-            tl.fromTo(circle, { strokeDasharray: clen, strokeDashoffset: clen }, { strokeDashoffset: 0, duration: 0.6 }, "-=0.5");
-            tl.from(g.querySelectorAll('text'), { opacity:0, scale:0, duration: 0.5 }, "-=0.4");
+            if (node.children) {
+                node.children.forEach((child, idx) => {
+                    const cx = x + (idx - (node.children.length - 1) / 2) * 250;
+                    const cy = y + 200;
 
-            if (n.children) {
-                n.children.forEach((child, i) => {
-                    const nextX = cx + (i - (n.children.length-1)/2) * 350;
-                    const nextY = cy + 280;
-                    drawNode(child, cx, cy, nextX, nextY);
+                    const line = document.createElement('div');
+                    line.style.position = 'absolute';
+                    line.style.background = 'var(--anim-accent)';
+                    line.style.height = '2px';
+                    line.style.width = '200px';
+                    line.style.transformOrigin = 'left center';
+                    line.style.left = (x + 60) + 'px';
+                    line.style.top = (y + 120) + 'px';
+                    const angle = Math.atan2(cy - y, cx - x) * 180 / Math.PI;
+                    line.style.transform = `rotate(${angle}deg)`;
+                    stage.appendChild(line);
+
+                    tl.from(line, { scaleX: 0, duration: opts.lineDuration || 0.4 }, "-=0.4");
+                    drawNode(child, cx, cy, level + 1);
                 });
             }
+        };
+
+        drawNode(data[0], 700, 150, 0);
+
+        if (opts.out) {
+            const outA = this._getAnim({ duration: opts.outDuration || 0.6 }, opts.out);
+            tl.to(paper, outA, "+=4");
         }
 
-        drawNode(nodes[0], null, null, 800, 150);
         this._register(card, tl);
     },
 
@@ -374,10 +366,10 @@ var Anim = window.Anim = {
         let path = "polygon(";
         const steps = 60;
         const drift = 2.5;
-        for(let i=0; i<=steps; i++) { path += `${(i/steps)*100}% ${Math.random()*drift}% ,`; } 
-        for(let i=0; i<=steps; i++) { path += `${100-Math.random()*drift}% ${(i/steps)*100}% ,`; }
-        for(let i=steps; i>=0; i--) { path += `${(i/steps)*100}% ${100-Math.random()*drift}% ,`; }
-        for(let i=steps; i>=0; i--) { path += `${Math.random()*drift}% ${(i/steps)*100}% ,`; }
+        for (let i = 0; i <= steps; i++) { path += `${(i / steps) * 100}% ${Math.random() * drift}% ,`; }
+        for (let i = 0; i <= steps; i++) { path += `${100 - Math.random() * drift}% ${(i / steps) * 100}% ,`; }
+        for (let i = steps; i >= 0; i--) { path += `${(i / steps) * 100}% ${100 - Math.random() * drift}% ,`; }
+        for (let i = steps; i >= 0; i--) { path += `${Math.random() * drift}% ${(i / steps) * 100}% ,`; }
         path = path.slice(0, -1) + ")";
         paper.style.clipPath = path;
 
@@ -389,7 +381,7 @@ var Anim = window.Anim = {
 
     flow(container, title, steps, opts = {}) {
         const { card, viewport } = this._createCard(container, title, opts.accent);
-        
+
         const stage = document.createElement('div');
         stage.style.width = '100%';
         stage.style.height = '100%';
@@ -399,7 +391,7 @@ var Anim = window.Anim = {
         stage.style.gap = '60px';
         viewport.appendChild(stage);
 
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 3 });
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: opts.repeatDelay || 3 });
 
         steps.forEach((s, i) => {
             const paper = this._createTornPaper(stage, 400, 250);
@@ -407,7 +399,7 @@ var Anim = window.Anim = {
             paper.style.left = "auto"; paper.style.top = "auto";
             paper.style.display = "flex"; paper.style.alignItems = "center"; paper.style.justifyContent = "center";
             paper.style.padding = "40px";
-            
+
             const content = document.createElement('div');
             content.style.fontSize = "2.8rem";
             content.style.color = "var(--anim-accent)";
@@ -418,12 +410,14 @@ var Anim = window.Anim = {
             content.textContent = s;
             paper.appendChild(content);
 
-            tl.from(paper, { 
-                y: 800, 
-                rotate: (Math.random() - 0.5) * 15, 
-                duration: 1, 
-                ease: "back.out(1.2)" 
-            }, i * 0.4);
+            const inA = this._getAnim({
+                y: 800,
+                rotate: (Math.random() - 0.5) * 15,
+                duration: opts.inDuration || 1,
+                ease: "back.out(1.2)"
+            }, opts.in);
+
+            tl.from(paper, inA, i * (opts.stagger || 0.4));
 
             if (i < steps.length - 1) {
                 const arr = document.createElement('div');
@@ -432,9 +426,14 @@ var Anim = window.Anim = {
                 arr.style.fontFamily = "'Inter', sans-serif";
                 arr.textContent = '→';
                 stage.appendChild(arr);
-                tl.from(arr, { opacity: 0, scale: 0, duration: 0.6, ease: "elastic.out(1, 0.5)" }, "-=0.2");
+                tl.from(arr, { opacity: 0, scale: 0, duration: opts.arrowDuration || 0.6, ease: "elastic.out(1, 0.5)" }, "-=0.2");
             }
         });
+
+        if (opts.out) {
+            const outA = this._getAnim({ duration: opts.outDuration || 0.6 }, opts.out);
+            tl.to(stage, outA, "+=4");
+        }
 
         this._register(card, tl);
     },
@@ -443,7 +442,7 @@ var Anim = window.Anim = {
         const { card, viewport } = this._createCard(container, title, opts.accent);
         const paper = this._createTornPaper(viewport, 950, 300);
         paper.style.bottom = "80px"; paper.style.left = "80px"; paper.style.top = "auto";
-        
+
         const stage = document.createElement('div');
         stage.className = 'anim-lt-v4';
         paper.appendChild(stage);
@@ -454,10 +453,13 @@ var Anim = window.Anim = {
         `;
         const sub = stage.querySelector('.anim-lt-sub-v4');
 
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 4 });
-        tl.from(paper, { y: 200, opacity: 0, duration: 1, ease: "power3.out" })
-          .to(sub, { opacity: 1, duration: 1 }, "-=0.2")
-          .to(paper, { opacity: 0, scale: 0.9, duration: 0.8 }, "+=5");
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: opts.repeatDelay || 4 });
+        const inA = this._getAnim({ y: 200, opacity: 0, duration: opts.inDuration || 1, ease: "power3.out" }, opts.in);
+        const outA = this._getAnim({ opacity: 0, scale: 0.9, duration: opts.outDuration || 0.8 }, opts.out);
+
+        tl.from(paper, inA)
+            .to(sub, { opacity: 1, duration: opts.subtitleDuration || 1 }, "-=0.2")
+            .to(paper, outA, `+=${opts.holdTime || 5}`);
 
         this._register(card, tl);
     },
@@ -479,14 +481,151 @@ var Anim = window.Anim = {
             return { el, text: line || ' ' };
         });
 
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 3 });
-        tl.from(paper, { y: 1100, rotate: -2, duration: 1.2, ease: "power4.out" });
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: opts.repeatDelay || 3 });
+        const inA = this._getAnim({ y: 1100, rotate: -2, duration: opts.inDuration || 1.2, ease: "power4.out" }, opts.in);
+        tl.from(paper, inA);
 
-        lineData.forEach(({el, text}) => {
-            tl.to(el, { text: text, duration: text.length * 0.03, ease: "none" });
+        const typeSpeed = opts.typeSpeed || 0.03;
+        lineData.forEach(({ el, text }) => {
+            tl.to(el, { text: text, duration: text.length * typeSpeed, ease: "none" });
         });
+
+        if (opts.out) {
+            const outA = this._getAnim({ duration: opts.outDuration || 0.6 }, opts.out);
+            tl.to(paper, outA, "+=4");
+        }
 
         this._register(card, tl);
     },
 
+    scroll(container, title, opts = {}) {
+        const verse = opts.verse || [];
+        const meaning = opts.meaning || [];
+        const accent = opts.accent || "var(--anim-accent)";
+
+        const { card, viewport } = this._createCard(container, title, accent);
+
+        const stage = document.createElement('div');
+        stage.style.cssText = `
+            position:absolute; top:0; left:0; width:1920px; height:1080px;
+            display:flex; align-items:center; justify-content:center;
+        `;
+        viewport.appendChild(stage);
+
+        const scroll = document.createElement('div');
+        scroll.style.cssText = `
+            position:relative; width:1400px;
+            background: linear-gradient(160deg, #f5e6c8 0%, #ede0b5 40%, #e8d6a0 100%);
+            border-radius: 8px;
+            box-shadow: 0 20px 80px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.5);
+            overflow: hidden;
+        `;
+        stage.appendChild(scroll);
+
+        const rodTop = document.createElement('div');
+        rodTop.style.cssText = `
+            width:100%; height:48px;
+            background: linear-gradient(180deg, #5a3e28 0%, #8b6040 50%, #5a3e28 100%);
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        `;
+        scroll.appendChild(rodTop);
+
+        const verseSection = document.createElement('div');
+        verseSection.style.cssText = `padding: 80px 120px 60px; border-bottom: 2px solid rgba(120,80,40,0.3);`;
+        scroll.appendChild(verseSection);
+
+        const verseEls = verse.map(line => {
+            const el = document.createElement('div');
+            el.style.cssText = `
+                font-family: 'Kalam', cursive;
+                font-size: 3.8rem; font-weight: 700;
+                color: #2c1a0a; line-height: 1.7;
+                text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
+                letter-spacing: 0.03em;
+                /* fully clipped right → wipe from left to reveal */
+                clip-path: inset(0 100% 0 0);
+                will-change: clip-path;
+            `;
+            el.textContent = line;
+            verseSection.appendChild(el);
+            return el;
+        });
+
+        const divider = document.createElement('div');
+        divider.style.cssText = `
+            padding: 30px 120px 20px;
+            font-family: 'Kalam', cursive; font-size: 2rem;
+            color: rgba(90,60,30,0.8); font-style: italic;
+            clip-path: inset(0 100% 0 0); will-change: clip-path;
+        `;
+        divider.textContent = "— नेपाली अर्थ —";
+        scroll.appendChild(divider);
+
+        const meaningSection = document.createElement('div');
+        meaningSection.style.cssText = `padding: 20px 120px 80px;`;
+        scroll.appendChild(meaningSection);
+
+        const meaningEls = meaning.map(line => {
+            const el = document.createElement('div');
+            el.style.cssText = `
+                font-family: 'Kalam', cursive;
+                font-size: 3.2rem; font-weight: 400;
+                color: #3d2010; line-height: 1.8;
+                clip-path: inset(0 100% 0 0);
+                will-change: clip-path;
+            `;
+            el.textContent = line;
+            meaningSection.appendChild(el);
+            return el;
+        });
+
+        const rodBottom = document.createElement('div');
+        rodBottom.style.cssText = `
+            width:100%; height:48px;
+            background: linear-gradient(180deg, #8b6040 0%, #5a3e28 100%);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.4);
+        `;
+        scroll.appendChild(rodBottom);
+
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: opts.repeatDelay || 4 });
+
+        const inA = this._getAnim({
+            y: -1080, scaleY: 0.05, duration: opts.inDuration || 1.8,
+            ease: "back.out(1.2)", transformOrigin: "top center"
+        }, opts.in);
+        tl.from(scroll, inA);
+
+        const wipeDuration = opts.wipeDuration || 1.5;
+        verseEls.forEach((el, i) => {
+            tl.to(el, {
+                clipPath: "inset(0 0% 0 0)",
+                duration: wipeDuration,
+                ease: "power3.inOut"
+            }, i === 0 ? "+=0.3" : `-=${wipeDuration * 0.46}`);
+        });
+
+        tl.to(divider, {
+            clipPath: "inset(0 0% 0 0)",
+            duration: opts.dividerDuration || 1,
+            ease: "power2.inOut"
+        }, "+=0.4");
+
+        const meaningWipeDuration = opts.meaningWipeDuration || 1.2;
+        meaningEls.forEach((el, i) => {
+            tl.to(el, {
+                clipPath: "inset(0 0% 0 0)",
+                duration: meaningWipeDuration,
+                ease: "power2.out"
+            }, i === 0 ? "+=0.2" : `-=${meaningWipeDuration * 0.5}`);
+        });
+
+        const outA = this._getAnim({
+            y: 1300, opacity: 0, duration: opts.outDuration || 1.5, ease: "power3.in"
+        }, opts.out);
+        tl.to(scroll, outA, `+=${opts.holdTime || 5}`);
+
+        this._register(card, tl);
+    },
 };
