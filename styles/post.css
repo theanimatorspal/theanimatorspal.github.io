@@ -123,3 +123,69 @@ ol {
 li {
     margin-bottom: 12px;
 }
+
+/* --- Premium Animated List Box --- */
+.anim-list-box {
+    list-style: none !important;
+    padding: 2.5rem !important;
+    margin: 3rem 0;
+    background: rgba(255, 255, 255, 0.03); /* Default to dark-friendly subtle glass */
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
+    animation: list-box-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    position: relative;
+    backdrop-filter: blur(4px);
+}
+
+[data-theme='light'] .anim-list-box {
+    background: rgba(0, 0, 0, 0.02);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.anim-list-box li {
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    transform: translateX(-15px);
+    animation: list-item-in 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: var(--fg);
+    padding-left: 0 !important;
+}
+
+.anim-list-box li::before {
+    content: "→";
+    margin-right: 15px;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.anim-list-box li:hover::before {
+    transform: translateX(4px);
+}
+
+/* Staggered Animation Logic */
+.anim-list-box li:nth-child(1) { animation-delay: 0.3s; }
+.anim-list-box li:nth-child(2) { animation-delay: 0.4s; }
+.anim-list-box li:nth-child(3) { animation-delay: 0.5s; }
+.anim-list-box li:nth-child(4) { animation-delay: 0.6s; }
+.anim-list-box li:nth-child(5) { animation-delay: 0.7s; }
+.anim-list-box li:nth-child(6) { animation-delay: 0.8s; }
+.anim-list-box li:nth-child(7) { animation-delay: 0.9s; }
+.anim-list-box li:nth-child(8) { animation-delay: 1.0s; }
+.anim-list-box li:nth-child(9) { animation-delay: 1.1s; }
+.anim-list-box li:nth-child(10) { animation-delay: 1.2s; }
+
+@keyframes list-box-in {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes list-item-in {
+    to { opacity: 1; transform: translateX(0); }
+}

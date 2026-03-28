@@ -260,7 +260,7 @@ var Anim = window.Anim = {
         const paper = this._createTornPaper(viewport, 1400, 900);
         const stage = document.createElement('div');
         stage.style.width = '100%';
-        stage.style.padding = '80px';
+        stage.style.padding = '30px';
         paper.appendChild(stage);
 
         const table = document.createElement('table');
@@ -628,4 +628,44 @@ var Anim = window.Anim = {
 
         this._register(card, tl);
     },
+
+    from(selector, type, opts = {}) {
+        const el = typeof selector === 'string' ? document.querySelector(selector) : selector;
+        if (!el) return console.warn(`Anim.from: Element ${selector} not found`);
+
+        const container = document.createElement('div');
+        container.className = 'anim-container-wrapper';
+        el.parentNode.insertBefore(container, el);
+
+        let data = null;
+        if (type === 'typing3d' || type === 'flow') {
+            data = Array.from(el.querySelectorAll('li')).map(li => li.innerText.trim());
+        } else if (type === 'table') {
+            const headers = Array.from(el.querySelectorAll('th')).map(th => th.innerText.trim());
+            const rows = Array.from(el.querySelectorAll('tbody tr')).map(tr => 
+                Array.from(tr.querySelectorAll('td')).map(td => td.innerText.trim())
+            );
+            data = { headers, rows };
+        } else if (type === 'codeReveal') {
+            data = el.innerText.trim();
+        }
+
+        // Hide original
+        el.style.display = 'none';
+
+        // Call the appropriate method
+        if (type === 'typing3d') {
+            this.typing3d(container, opts.title || "List", data, opts);
+        } else if (type === 'table') {
+            this.table(container, opts.title || "Table", { ...data, ...opts });
+        } else if (type === 'flow') {
+            this.flow(container, opts.title || "Flow", data, opts);
+        } else if (type === 'codeReveal') {
+            this.codeReveal(container, opts.title || "Code", data, opts);
+        } else if (type === 'boom') {
+            this.boom(container, opts.title || "Impact", { word: el.innerText.trim(), ...opts });
+        }
+
+        return container;
+    }
 };

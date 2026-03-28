@@ -1,5 +1,22 @@
 const posts = [
     {
+        id: 'vibhakti-chuttyau',
+        title: 'विभक्ति छुट्ट्याऊ आन्दोलन',
+        date: 'March 28, 2026',
+        category: 'Linguistics',
+        excerpt: 'A deep dive into the debate surrounding the separation of case markers in Nepali.',
+        path: 'data/posts/linguistics/vibhakti-chuttyau/index.html'
+    },
+
+    {
+        id: 'subhashitani',
+        title: 'सुभाषितानि: Wisdom in Verses',
+        date: 'March 24, 2026',
+        category: 'Philosophy',
+        excerpt: 'Exploring the timeless wisdom of Sanskrit Subhashitas with their profound Nepali meanings.',
+        path: 'data/posts/philosophy/subhashitani/index.html'
+    },
+    {
         id: 'monads-curse',
         title: 'The Curse of Monads: Breaking the Spell',
         date: 'March 7, 2026',
@@ -30,14 +47,6 @@ const posts = [
         category: 'Philosophy',
         excerpt: 'Rebuilding a digital home with simplicity in mind. Why minimalism matters in an age of information overload.',
         path: 'data/posts/philosophy/hello-world/index.html'
-    },
-    {
-        id: 'subhashitani',
-        title: 'सुभाषितानि: Wisdom in Verses',
-        date: 'March 24, 2026',
-        category: 'Philosophy',
-        excerpt: 'Exploring the timeless wisdom of Sanskrit Subhashitas with their profound Nepali meanings.',
-        path: 'data/posts/philosophy/subhashitani/index.html'
     },
 ];
 
