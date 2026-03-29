@@ -55,6 +55,15 @@ const App = () => {
                         }
                     });
 
+                    // Fix link paths
+                    const links = contentDiv.querySelectorAll('a');
+                    links.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && !href.startsWith('http') && !href.startsWith('/') && !href.startsWith('.') && !href.startsWith('#')) {
+                            link.href = postDir + '/' + href;
+                        }
+                    });
+
                     const scripts = contentDiv.querySelectorAll('script');
                     scripts.forEach(oldScript => {
                         const newScript = document.createElement('script');

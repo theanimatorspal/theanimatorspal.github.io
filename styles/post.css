@@ -189,3 +189,6 @@ li {
 @keyframes list-item-in {
     to { opacity: 1; transform: translateX(0); }
 }
+.cta-btn .icon {
+    font-size: 1.4rem;
+}
