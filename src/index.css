@@ -1,0 +1,43 @@
+:root {
+  /* Warm Parchment Palette */
+  --bg-app: #FAF7F2;          /* Parchment canvas background */
+  --bg-surface: #FFFFFF;      /* Paper white for main content areas */
+  --bg-subtle: #F3ECE1;       /* Subtle warm beige for code/table headers */
+  
+  --border-subtle: #E2D9CC;   /* Soft warm dividing lines */
+  --border-strong: #1F1D1A;   /* Sharp dark borders for structural emphasis */
+
+  --text-primary: #1F1D1A;    /* Dark warm ink */
+  --text-secondary: #5C554E;  /* Warm grey body text */
+  --text-muted: #8C827A;      /* Low contrast meta info */
+
+  /* KSAI Brand Colors */
+  --brand-primary: #C85A32;   /* Terracotta / Rust Orange */
+  --brand-hover: #AA4723;     /* Deep Rust */
+  --brand-light: #FDF0EB;     /* Soft Warm Tint */
+
+  /* Fonts */
+  --font-heading: "Newsreader", "Georgia", serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+/* Crisp button reset */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
