@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ platform.name }}{% endblock %} — {{ platform.tagline }}</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Gaegu:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/static/css/main.css">
+  
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <!-- Left notebook spiral binder (populated by JS) -->
+  <div class="spiral-binder" id="spiralBinder"></div>
+
+  <div class="site-wrapper">
+    {% include "components/navbar.html" %}
+    <main class="main-content-fluid">
+      {% block content %}{% endblock %}
+    </main>
+    {% include "components/footer.html" %}
+  </div>
+
+  <script>
+    // Restore saved theme before paint to prevent flash
+    const themeKey = 'ksai_theme_mode';
+    const currentTheme = localStorage.getItem(themeKey) || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const target = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', target);
+      localStorage.setItem(themeKey, target);
+      updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const icon = document.getElementById('theme-toggle-icon');
+      if (icon) icon.textContent = current === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Populate spiral binder rings
+    document.addEventListener('DOMContentLoaded', function () {
+      updateThemeIcon();
+      const binder = document.getElementById('spiralBinder');
+      if (!binder) return;
+      const count = Math.floor(window.innerHeight / 46);
+      for (let i = 0; i < count; i++) {
+        const ring = document.createElement('div');
+        ring.className = 'spiral-ring';
+        binder.appendChild(ring);
+      }
+    });
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

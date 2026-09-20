@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div style="border-bottom: 1px solid var(--md-surface-border); padding-bottom: 18px; margin-bottom: 24px;">
+  <h1 style="font-size: 28px; font-weight: 700; color: var(--md-text); margin-bottom: 4px; letter-spacing: -0.01em;">
+    Study Dashboard
+  </h1>
+  <p style="font-size: 14px; color: var(--md-text-secondary);">
+    Active learning paths, progress checkpoints, and study checklist.
+  </p>
+</div>
+
+<div class="content-table-panel">
+  <div class="content-table-head">
+    <span>Study Checklist</span>
+    <span class="status-badge status-badge-free">Active</span>
+  </div>
+  <div style="padding: 24px;">
+    <div id="react-dashboard-tasks"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% raw %}
+<script type="text/babel">
+  function DashboardTasks() {
+    const [tasks, setTasks] = React.useState([
+      { id: 1, title: "Review Shader pipeline basics and UV coordinates", completed: false },
+      { id: 2, title: "Read introduction to Turing limits and computability", completed: false },
+      { id: 3, title: "Configure local development environment", completed: true }
+    ]);
+
+    const toggle = (id) => {
+      setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+    };
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {tasks.map(t => (
+          <div 
+            key={t.id} 
+            onClick={() => toggle(t.id)}
+            style={{
+              padding: '12px 16px',
+              border: '1px solid var(--md-surface-border)',
+              borderRadius: '6px',
+              backgroundColor: t.completed ? 'var(--md-surface-variant)' : 'var(--md-surface)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
+            }}
+          >
+            <input type="checkbox" checked={t.completed} readOnly style={{ accentColor: 'var(--md-primary)' }} />
+            <span style={{ 
+              textDecoration: t.completed ? 'line-through' : 'none', 
+              color: t.completed ? 'var(--md-text-muted)' : 'var(--md-text)',
+              fontSize: '14px'
+            }}>
+              {t.title}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById('react-dashboard-tasks'));
+  root.render(<DashboardTasks />);
+</script>
+{% endraw %}
+{% endblock %}

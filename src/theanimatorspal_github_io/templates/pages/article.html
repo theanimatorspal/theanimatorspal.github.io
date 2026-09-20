@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.title }}{% endblock %}
+
+{% block content %}
+<div style="border-bottom: 1px solid var(--md-surface-border); padding-bottom: 20px; margin-bottom: 24px;">
+  <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+    <span class="status-badge" style="background-color: var(--md-primary-container); color: var(--md-on-primary-container);">
+      {{ item.domain }}
+    </span>
+    {% if item.access == 'Public' %}
+      <span class="status-badge status-badge-free">Public</span>
+    {% else %}
+      <span class="status-badge status-badge-locked">Members Only</span>
+    {% endif %}
+  </div>
+  <h1 style="font-size: 30px; font-weight: 700; color: var(--md-text); margin-bottom: 8px; letter-spacing: -0.01em;">
+    {{ item.title }}
+  </h1>
+  <p style="font-size: 15px; color: var(--md-text-secondary); max-width: 900px;">{{ item.description }}</p>
+</div>
+
+{% if item.access != 'Public' %}
+<div style="background-color: var(--md-surface-variant); border: 1px solid var(--md-surface-border); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;">
+  <div>
+    <strong>Members Only Content:</strong>
+    <span style="color: var(--md-text-secondary); font-size: 13px; margin-left: 6px;">
+      Full code notebooks and repositories are available for studio members.
+    </span>
+  </div>
+  <a href="/membership" class="btn-solid" style="padding: 6px 14px; font-size: 12px;">Upgrade Plan</a>
+</div>
+{% endif %}
+
+<div class="content-table-panel">
+  <div class="content-table-head">
+    <span>{{ item.type }}</span>
+    <span class="status-badge status-badge-free">{{ item.domain }}</span>
+  </div>
+  <div style="padding: 28px; font-size: 15px; line-height: 1.7; color: var(--md-text);">
+    {{ item.body | safe }}
+  </div>
+</div>
+{% endblock %}

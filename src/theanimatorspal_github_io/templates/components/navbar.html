@@ -1,0 +1,61 @@
+<header class="app-bar">
+  <div class="top-bar-inner">
+    <div class="top-bar-left">
+      <a href="/" class="logo-link">
+        <span class="logo-badge">{{ platform.name }}</span>
+        <span>{{ platform.name }}</span>
+      </a>
+
+      <div class="domain-tabs">
+        {% for pill in pill_nav %}
+          <a href="{{ pill.url }}" class="domain-tab {% if (active_domain and pill.label == active_domain) or (not active_domain and pill.active) %}active{% endif %}">
+            {{ pill.label }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="top-bar-right">
+      <button class="action-icon-btn" onclick="toggleTheme()" title="Toggle Day/Night Mode" aria-label="Toggle Theme">
+        <span id="theme-toggle-icon">🌙</span>
+      </button>
+
+      <a href="/catalog" class="action-icon-btn" title="Search catalog" aria-label="Search">
+        🔍
+      </a>
+
+      <a href="/membership" class="btn-stroke">
+        {{ platform.price }} 💭
+      </a>
+
+      <a href="/dashboard" class="user-chip">
+        KS
+      </a>
+    </div>
+  </div>
+
+  <nav class="nav-bar-sub">
+    <div class="nav-bar-sub-inner">
+      {% for item in sub_menu %}
+        <div class="nav-item-sub {% if item.is_highlight %}highlight{% endif %}">
+          <a href="{{ item.url }}" class="nav-link-sub">
+            <span>{{ item.label }}</span>
+            {% if item.badge %}
+              <span class="logo-badge" style="font-size: 9px; padding: 1px 5px; margin-left: 2px;">{{ item.badge }}</span>
+            {% endif %}
+            {% if item.dropdown %}
+              <span class="nav-caret"></span>
+            {% endif %}
+          </a>
+          {% if item.dropdown %}
+            <div class="nav-dropdown-menu">
+              {% for sub in item.dropdown %}
+                <a href="{{ sub.url }}">{{ sub.title }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </nav>
+</header>

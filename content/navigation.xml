@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <platform>
+    <name>KSAI</name>
+    <tagline>Arts, Technology &amp; Philosophy</tagline>
+    <price>$5/mo</price>
+  </platform>
+
+  <pills>
+    <pill label="KSAI" url="/" active="true" />
+    <pill label="Arts" url="/catalog?domain=Arts" badge="Visuals &amp; Shaders" />
+    <pill label="Tech" url="/catalog?domain=Technology" badge="Systems &amp; Code" />
+    <pill label="Philosophy" url="/catalog?domain=Philosophy" badge="Logic &amp; Mind" />
+  </pills>
+
+  <sub_menu>
+    <item label="★ What's New" url="/catalog?tag=new" highlight="true" />
+
+    <item label="Classes" url="/catalog?type=class">
+      <dropdown title="Shader Lab &amp; 3D Math" url="/content/graphics-foundations" />
+      <dropdown title="Transformers from Scratch" url="/content/transformers-scratch" />
+      <dropdown title="Epistemology &amp; Computation" url="/content/epistemology-computation" />
+    </item>
+
+    <item label="Study Plans" url="/dashboard">
+      <dropdown title="The Overwhelmed Beginner Plan (14 Days)" url="/dashboard?plan=beginner" />
+      <dropdown title="Creative Coding &amp; Shaders Sprint (1 Month)" url="/dashboard?plan=shaders" />
+      <dropdown title="Foundations of AI &amp; Computation (2 Months)" url="/dashboard?plan=ai" />
+    </item>
+
+    <item label="Practice" url="/catalog?type=practice">
+      <dropdown title="Discrete Math Problems (50)" url="/content/discrete-math" />
+      <dropdown title="Shader Sandbox Challenges" url="/tools" />
+    </item>
+
+    <item label="Quizzes" url="/tools" badge="12 new" />
+    <item label="Essays" url="/catalog?domain=Philosophy" />
+    <item label="Membership" url="/membership" />
+  </sub_menu>
+
+  <hero>
+    <headline>A eclectic place for Arts, Technology and Philosophy</headline>
+    <subheadline>You are not either an artist, a programmer, or an essayist or any other profession. You are more than that. I am too. </subheadline>
+    <card_tag>Live Sprint</card_tag>
+    <stat_number>42</stat_number>
+    <stat_label>curated modules, notebooks &amp; labs ready</stat_label>
+    <highlight_title>Shader Math, Turing Limits &amp; Discrete Proofs</highlight_title>
+    
+    <tiers>
+      <tier name="KSAI Free" desc="Public essays, syllabus maps &amp; toy tools" price="$0" />
+      <tier name="KSAI Member" desc="Full recordings, interactive lab code &amp; problem sets" price="$5 / mo" />
+    </tiers>
+  </hero>
+
+  <pillars>
+    <pillar id="arts" tag="Arts" badge_bg="#FEF3C7" badge_color="#D97706">
+      <title>Creative Code &amp; Visual Form</title>
+      <desc>Procedural animation, GLSL fragment shaders, typography, color harmony, and human perception.</desc>
+      <url>/catalog?domain=Arts</url>
+      <link_text>Explore Art Tracks</link_text>
+    </pillar>
+
+    <pillar id="tech" tag="Technology" badge_bg="#DBEAFE" badge_color="#2563EB">
+      <title>Systems, Transformers &amp; Logic</title>
+      <desc>Building neural architectures from first principles, writing compilers, and mastering discrete structures.</desc>
+      <url>/catalog?domain=Technology</url>
+      <link_text>Explore Tech Tracks</link_text>
+    </pillar>
+
+    <pillar id="phil" tag="Philosophy" badge_bg="#F3E8FF" badge_color="#9333EA">
+      <title>Minds, Computation &amp; Ethics</title>
+      <desc>What can actually be computed? Inquiries into Turing machines, cognition, consciousness, and machine intent.</desc>
+      <url>/catalog?domain=Philosophy</url>
+      <link_text>Explore Philosophy Tracks</link_text>
+    </pillar>
+  </pillars>
+</site>

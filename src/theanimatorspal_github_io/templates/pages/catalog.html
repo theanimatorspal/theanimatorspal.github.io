@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Catalog{% endblock %}
+
+{% block content %}
+<div style="border-bottom: 2px dashed var(--paper-line); padding-bottom: 18px; margin-bottom: 28px;">
+  <h1 style="font-family: var(--f-sketch); font-size: 2.4rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; text-transform: uppercase;">
+    Curriculum &amp; Content Catalog
+  </h1>
+  <p style="font-family: var(--f-hand); font-size: 1.3rem; color: var(--ink-2);">
+    Browse all published lessons, technical deep dives, and philosophical inquiries.
+  </p>
+</div>
+
+<div class="content-table-panel">
+  <div class="content-table-head">
+    <span>Catalog Index</span>
+    <span class="count-badge">{{ items | length }} items</span>
+  </div>
+
+  {% if items %}
+  <table class="fluid-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Domain</th>
+        <th>Format</th>
+        <th>Access</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td><strong style="font-family: var(--f-sketch); font-size: 1.05rem;">{{ item.title }}</strong></td>
+        <td style="font-family: var(--f-hand); font-size: 1.1rem;">{{ item.domain }}</td>
+        <td style="font-family: var(--f-mono); font-size: 0.8rem;">{{ item.type }}</td>
+        <td>
+          {% if item.access == 'Public' %}
+            <span class="status-badge status-badge-free">Public</span>
+          {% else %}
+            <span class="status-badge status-badge-locked">Members</span>
+          {% endif %}
+        </td>
+        <td>
+          <a href="/content/{{ item.slug }}" class="table-open-link">Open &rarr;</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state-card">
+    <div class="empty-state-title">No content files found in content/lessons/</div>
+    <p style="font-family: var(--f-hand); font-size: 1.1rem; color: var(--ink-2); margin-top: 6px;">Add .xml files into <code>content/lessons/</code> to have them appear here automatically.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

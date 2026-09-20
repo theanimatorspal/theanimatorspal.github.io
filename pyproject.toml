@@ -1,0 +1,23 @@
+[project]
+name = "theanimatorspal-github-io"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "ksai", email = "theanimatorspal@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.141.1",
+    "jinja2>=3.1.6",
+    "markdown>=3.10.3",
+    "pyyaml>=6.0.3",
+    "uvicorn[standard]>=0.53.0",
+]
+
+[project.scripts]
+theanimatorspal-github-io = "theanimatorspal_github_io:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

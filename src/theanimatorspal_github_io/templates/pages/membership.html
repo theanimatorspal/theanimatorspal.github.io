@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Membership{% endblock %}
+
+{% block content %}
+<div style="border-bottom: 1px solid var(--md-surface-border); padding-bottom: 18px; margin-bottom: 28px;">
+  <h1 style="font-size: 28px; font-weight: 700; color: var(--md-text); margin-bottom: 4px; letter-spacing: -0.01em;">
+    Membership Plans
+  </h1>
+  <p style="font-size: 14px; color: var(--md-text-secondary);">
+    Transparent, accessible access to independent educational courses and lab tools.
+  </p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 36px;">
+  <div class="content-table-panel" style="padding: 28px; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
+    <div>
+      <span class="status-badge status-badge-free" style="margin-bottom: 12px;">Public Access</span>
+      <h3 style="font-size: 22px; font-weight: 700; color: var(--md-text); margin-bottom: 8px;">Free Explorer</h3>
+      <div style="font-size: 32px; font-weight: 700; color: var(--md-text); margin-bottom: 14px;">$0 <span style="font-size: 13px; font-weight: 400; color: var(--md-text-secondary);">/ forever</span></div>
+      <p style="font-size: 14px; color: var(--md-text-secondary); line-height: 1.6; margin-bottom: 24px;">
+        Buy me something to eat.
+      </p>
+    </div>
+    <button class="btn-stroke" style="width: 100%; justify-content: center;">Current Tier</button>
+  </div>
+
+  <div class="content-table-panel" style="padding: 28px; border: 2px solid var(--md-primary); display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
+    <div>
+      <span class="status-badge" style="background-color: var(--md-primary-container); color: var(--md-on-primary-container); margin-bottom: 12px;">Full Access</span>
+      <h3 style="font-size: 22px; font-weight: 700; color: var(--md-text); margin-bottom: 8px;">Studio Member</h3>
+      <div style="font-size: 32px; font-weight: 700; color: var(--md-primary); margin-bottom: 14px;">$5 <span style="font-size: 13px; font-weight: 400; color: var(--md-text-secondary);">/ month</span></div>
+      <p style="font-size: 14px; color: var(--md-text-secondary); line-height: 1.6; margin-bottom: 24px;">
+        Buy me a drink too !
+      </p>
+    </div>
+    <button class="btn-solid" style="width: 100%; justify-content: center;">Join Studio Membership</button>
+  </div>
+</div>
+{% endblock %}

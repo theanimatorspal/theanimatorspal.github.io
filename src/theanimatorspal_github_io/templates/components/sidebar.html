@@ -1,0 +1,57 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-badge">KSAI</span>
+    <span class="brand-title">Platform</span>
+  </div>
+  <div class="sidebar-scroll">
+    <div class="nav-group">
+      <div class="nav-group-title">Overview</div>
+      <a href="/" class="nav-item {% if current_page == 'home' %}active{% endif %}">
+        <span>Home</span>
+      </a>
+      <a href="/dashboard" class="nav-item {% if current_page == 'dashboard' %}active{% endif %}">
+        <span>Dashboard</span>
+        <span class="nav-badge">Study</span>
+      </a>
+      <a href="/catalog" class="nav-item {% if current_page == 'catalog' %}active{% endif %}">
+        <span>Content Catalog</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Curriculum & Areas</div>
+      <a href="/catalog?category=math-cs" class="nav-item">
+        <span>Mathematics & CS</span>
+      </a>
+      <a href="/catalog?category=ai-ml" class="nav-item">
+        <span>AI & Machine Learning</span>
+      </a>
+      <a href="/catalog?category=animation" class="nav-item">
+        <span>Animation & Graphics</span>
+      </a>
+      <a href="/catalog?category=systems" class="nav-item">
+        <span>Systems & Architecture</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Tools & Labs</div>
+      <a href="/tools" class="nav-item {% if current_page == 'tools' %}active{% endif %}">
+        <span>Interactive Tools</span>
+      </a>
+      <a href="/experiments" class="nav-item {% if current_page == 'experiments' %}active{% endif %}">
+        <span>Software & Labs</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Account & Membership</div>
+      <a href="/membership" class="nav-item {% if current_page == 'membership' %}active{% endif %}">
+        <span>Membership Plans</span>
+      </a>
+      <a href="/settings" class="nav-item {% if current_page == 'settings' %}active{% endif %}">
+        <span>User Settings</span>
+      </a>
+    </div>
+  </div>
+</aside>

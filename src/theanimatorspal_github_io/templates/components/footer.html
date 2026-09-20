@@ -1,0 +1,17 @@
+<footer class="app-footer-clean">
+  <div class="footer-inner-clean">
+    <div class="footer-brand-info">
+      <span class="footer-brand-name">{{ platform.name }}</span>
+      <span class="footer-tagline-text">{{ platform.tagline }}</span>
+    </div>
+
+    <div class="footer-nav-links">
+      {% for pill in pill_nav %}
+        <a href="{{ pill.url }}">{{ pill.label }}</a>
+      {% endfor %}
+      <a href="/catalog">Catalog</a>
+      <a href="/dashboard">Study Plans</a>
+      <a href="/membership">Pricing</a>
+    </div>
+  </div>
+</footer>

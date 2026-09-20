@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ platform.name }}{% endblock %}
+
+{% block content %}
+<section class="hero-banner">
+  <div>
+    <h1 class="hero-title">{{ hero.headline }}</h1>
+    <p class="hero-desc">{{ hero.subheadline }}</p>
+
+    <div class="hero-btn-row">
+      <a href="/catalog" class="btn-solid">
+        SEE STUFFS 👁️
+      </a>
+      <a href="/dashboard" class="btn-solid">
+        VIEW STRUCTURED STUFFS ☰
+      </a>
+    </div>
+  </div>
+
+  <div>
+    <div class="hero-stat-card">
+      <div class="hero-stat-number">{{ hero.stat_number }}</div>
+      <div class="hero-stat-label">{{ hero.stat_label }}</div>
+      <div class="hero-stat-callout">{{ hero.highlight_title }}</div>
+    </div>
+  </div>
+</section>
+
+{% if pillars %}
+<div class="pillars-grid">
+  {% for pillar in pillars %}
+  <div class="pillar-card">
+    <span class="pillar-tag" style="color: {{ pillar.badge_color }}; border-color: {{ pillar.badge_color }}; background: {{ pillar.badge_bg }};">
+      {{ pillar.tag }}
+    </span>
+    <h3 class="pillar-title">{{ pillar.title }}</h3>
+    <p class="pillar-desc">{{ pillar.desc }}</p>
+    <a href="{{ pillar.url }}" class="pillar-link">{{ pillar.link_text }} →</a>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
